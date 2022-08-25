@@ -1,4 +1,8 @@
-import { Schema, InferSchemaType, model } from "mongoose";
+import { Schema, model } from "mongoose";
+
+interface IBrand {
+  name: string;
+}
 
 // Schema
 const schema = new Schema(
@@ -13,8 +17,6 @@ const schema = new Schema(
   }
 );
 
-type BrandType = InferSchemaType<typeof schema>;
+const Brand = model<IBrand>("Brand", schema);
 
-const Brand = model<BrandType>("Brand", schema);
-
-export { Brand };
+export { Brand, IBrand };

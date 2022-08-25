@@ -1,4 +1,4 @@
-import { number, object, string, TypeOf, z } from "zod";
+import { number, object, string, TypeOf, enum as Enum } from "zod";
 
 export const createCarSchema = object({
   body: object({
@@ -14,10 +14,10 @@ export const createCarSchema = object({
     description: string({
       required_error: "Description is required",
     }),
-    type: string({
-      required_error: "Type is required",
+    brand: string({
+      required_error: "Brand is required",
     }),
-    transmission: z.enum(["Manual", "Automatic"], {
+    transmission: Enum(["Manual", "Automatic"], {
       required_error: "Transmission is required",
     }),
     capacity: number({

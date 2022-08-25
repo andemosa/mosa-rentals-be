@@ -56,4 +56,4 @@ schema.method(
 // 3. Create a Model.
 const User = model<IUser, UserModel>("User", schema);
 
-export { User };
+export { User, IUser };

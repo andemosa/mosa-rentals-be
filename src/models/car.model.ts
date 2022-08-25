@@ -1,4 +1,5 @@
 import { Schema, model, Types } from "mongoose";
+import { IUser } from "./user.model";
 
 interface IReview {
   rating: number;
@@ -7,7 +8,7 @@ interface IReview {
 }
 
 interface ICar {
-  type: string;
+  brand: string;
   name: string;
   headline: string;
   tagline: string;
@@ -19,6 +20,7 @@ interface ICar {
   reviews?: Types.DocumentArray<IReview>;
   images?: string[];
   discount?: number | undefined;
+  likes?: Types.DocumentArray<IUser>;
 }
 
 const reviewSchema = new Schema(
@@ -53,10 +55,11 @@ const carSchema = new Schema({
     type: String,
     required: true,
   },
-  type: {
+  brand: {
     type: String,
     required: true,
   },
+  likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
   transmission: {
     type: String,
     required: true,
