@@ -1,5 +1,8 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors"
+require('dotenv').config();
+
 import { connectToDatabase, disconnectFromDatabase } from "./utils/database";
 import logger from "./utils/logger";
 import carRouter from "./routes/car.route";
@@ -16,6 +19,7 @@ const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
+app.use(cors());
 
 app.use("/api/cars", carRouter);
 app.use("/api/brands", brandRouter);

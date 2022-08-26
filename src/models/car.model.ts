@@ -1,5 +1,4 @@
 import { Schema, model, Types } from "mongoose";
-import { IUser } from "./user.model";
 
 interface IReview {
   rating: number;
@@ -20,7 +19,7 @@ interface ICar {
   reviews?: Types.DocumentArray<IReview>;
   images?: string[];
   discount?: number | undefined;
-  likes?: Types.DocumentArray<IUser>;
+  likes?: string[];
 }
 
 const reviewSchema = new Schema(
@@ -38,53 +37,58 @@ const reviewSchema = new Schema(
   }
 );
 
-const carSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
+const carSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    headline: {
+      type: String,
+      required: true,
+    },
+    tagline: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    brand: {
+      type: String,
+      required: true,
+    },
+    likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    transmission: {
+      type: String,
+      required: true,
+      enum: ["Manual", "Automatic"],
+    },
+    capacity: {
+      type: Number,
+      required: true,
+    },
+    gasoline: {
+      type: Number,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    discount: {
+      type: Number,
+      min: 0,
+      max: 100,
+    },
+    reviews: [reviewSchema],
+    images: [String],
   },
-  headline: {
-    type: String,
-    required: true,
-  },
-  tagline: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  brand: {
-    type: String,
-    required: true,
-  },
-  likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
-  transmission: {
-    type: String,
-    required: true,
-    enum: ["Manual", "Automatic"],
-  },
-  capacity: {
-    type: Number,
-    required: true,
-  },
-  gasoline: {
-    type: Number,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  discount: {
-    type: Number,
-    min: 0,
-    max: 100,
-  },
-  reviews: [reviewSchema],
-  images: [String],
-});
+  {
+    timestamps: true,
+  }
+);
 
 const Review = model<IReview>("Review", reviewSchema);
 

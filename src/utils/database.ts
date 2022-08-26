@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import logger from "./logger";
 
 const DB_CONNECTION_STRING =
-  process.env.DB_CONNECTION_STRING || "mongodb://localhost:27017/mosa-rentals";
+  process.env.MONGO_URI || "mongodb://localhost:27017/mosa-rentals";
 
 export async function connectToDatabase() {
   try {

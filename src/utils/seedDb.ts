@@ -10,6 +10,15 @@ const nameList = [
   "Jeep",
 ];
 
+const usersList = [
+  "6307a15667fabc7a0fd244c0",
+  "63089515b92d7f6f4d4c80a8",
+  "63089557b92d7f6f4d4c80aa",
+  "63089682b92d7f6f4d4c80ac",
+  "63089738b92d7f6f4d4c80ae",
+  "63089772b92d7f6f4d4c80b0",
+];
+
 const brandList = ["Sport", "SUV", "MPV", "Sedan", "Coupe", "Hatchbank"];
 
 const transmissionList = ["Manual", "Automatic"] as const;
@@ -59,8 +68,9 @@ export const seedCar = async () => {
       price: price[getRandomInt(0, price.length - 1)],
       discount: discount[getRandomInt(0, discount.length - 1)],
       images: [imagesList[getRandomInt(0, imagesList.length - 1)]],
+      likes: [...usersList.slice(0, getRandomInt(0, usersList.length - 1))],
     };
-    
+
     cars.push(obj);
   }
   await Car.deleteMany();
