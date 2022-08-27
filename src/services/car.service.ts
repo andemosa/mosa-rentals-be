@@ -1,3 +1,4 @@
+import { FilterQuery, QueryOptions } from "mongoose";
 import { Brand } from "../models/brand.model";
 import { Car, ICar } from "../models/car.model";
 
@@ -32,4 +33,24 @@ export function findRecommendedCars() {
 
 export function countCars() {
   return Car.countDocuments();
+}
+
+export function findCar(carId: string) {
+  return Car.findById(carId);
+}
+
+export function findDistinctBrand() {
+  return Car.aggregate([
+    { $group: { _id: "$brand", total: { $sum: 1 } } },
+  ]).sort("_id");
+}
+
+export function findDistinctCapacity() {
+  return Car.aggregate([
+    { $group: { _id: "$capacity", total: { $sum: 1 } } },
+  ]).sort("_id");
+}
+
+export function findHighestPrice() {
+  return Car.find().sort("-price").limit(1).select("price");
 }

@@ -1,5 +1,5 @@
 import express from "express";
-import { getCarsHandler, getPopularCarsHandler, getRecommendedCarsHandler, uploadCarHandler } from "../controllers/car.controller";
+import { getCarHandler, getCarsHandler, getOptionsHandler, getPopularCarsHandler, getRecommendedCarsHandler, uploadCarHandler } from "../controllers/car.controller";
 import validate from "../middleware/validateResource";
 import { createCarSchema } from "../schema/car.schema";
 
@@ -12,5 +12,9 @@ router.get("/", getCarsHandler)
 router.get("/popular", getPopularCarsHandler)
 
 router.get("/recommended", getRecommendedCarsHandler)
+
+router.get("/options", getOptionsHandler)
+
+router.get("/:carId", getCarHandler)
 
 export default router;

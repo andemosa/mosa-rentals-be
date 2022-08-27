@@ -1,13 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
-import { Car } from "../models/car.model";
-
 import { CreateCarInput } from "../schema/car.schema";
 import {
   countCars,
   createCar,
+  findCar,
   findCars,
+  findDistinctBrand,
+  findDistinctCapacity,
+  findHighestPrice,
   findPopularCars,
   findRecommendedCars,
 } from "../services/car.service";
@@ -45,4 +47,40 @@ export async function getRecommendedCarsHandler(_: Request, res: Response) {
     cars,
     numCars,
   });
+}
+
+export async function getCarHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { carId } = req.params;
+
+  try {
+    const car = await findCar(carId);
+
+    return res.send(car);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getOptionsHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const brands = await findDistinctBrand();
+    const capacities = await findDistinctCapacity();
+    const maxPrice = await findHighestPrice()
+
+    res.send({
+      brands,
+      capacities,
+      maxPrice
+    });
+  } catch (error) {
+    next(error);
+  }
 }
