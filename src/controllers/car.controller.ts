@@ -28,9 +28,15 @@ export async function uploadCarHandler(
 }
 
 export async function getCarsHandler(_: Request, res: Response) {
-  const cars = await findCars();
+  const cars = findCars();
+  const numCars = countCars();
 
-  return res.status(StatusCodes.OK).send(cars);
+  const result = await Promise.all([cars, numCars]);
+
+  return res.status(StatusCodes.OK).send({
+    cars: result[0],
+    numCars: result[1],
+  });
 }
 
 export async function getPopularCarsHandler(_: Request, res: Response) {
@@ -40,12 +46,14 @@ export async function getPopularCarsHandler(_: Request, res: Response) {
 }
 
 export async function getRecommendedCarsHandler(_: Request, res: Response) {
-  const cars = await findRecommendedCars();
-  const numCars = await countCars();
+  const cars = findRecommendedCars();
+  const numCars = countCars();
+
+  const result = await Promise.all([cars, numCars]);
 
   return res.status(StatusCodes.OK).send({
-    cars,
-    numCars,
+    cars: result[0],
+    numCars: result[1],
   });
 }
 
@@ -71,14 +79,16 @@ export async function getOptionsHandler(
   next: NextFunction
 ) {
   try {
-    const brands = await findDistinctBrand();
-    const capacities = await findDistinctCapacity();
-    const maxPrice = await findHighestPrice()
+    const brands = findDistinctBrand();
+    const capacities = findDistinctCapacity();
+    const maxPrice = findHighestPrice();
+
+    const result = await Promise.all([brands, capacities, maxPrice]);
 
     res.send({
-      brands,
-      capacities,
-      maxPrice
+      brands: result[0],
+      capacities: result[1],
+      maxPrice: result[2],
     });
   } catch (error) {
     next(error);
