@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import { Car } from "../models/car.model";
 
 import { CreateCarInput } from "../schema/car.schema";
 import {
@@ -90,6 +91,36 @@ export async function getOptionsHandler(
       capacities: result[1],
       maxPrice: result[2],
     });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function searchCarsHandler(
+  req: Request<{}, {}, { brand?: string; capacity?: string; price?: string }>,
+  res: Response,
+  next: NextFunction
+) {
+  const { brand, capacity, price } = req.body;
+
+  let query: Record<keyof typeof req.body, any> = {
+    capacity: undefined,
+    price: undefined,
+    brand: undefined,
+  };
+
+  if (brand) query.brand = { $in: brand.split(", ") };
+
+  if (capacity)
+    query.capacity = {
+      $lte: capacity,
+    };
+
+  if (price) query.price = { $lte: price };
+
+  try {
+    const cars = await Car.find(query);
+    res.json(cars);
   } catch (error) {
     next(error);
   }
